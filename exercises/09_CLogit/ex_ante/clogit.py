@@ -88,14 +88,14 @@ def choice_prob(theta, x):
     N, J, K = x.shape
     
     # deterministic utility 
-    v = None # Fill in (using util())
+    v = util(theta, x) # Fill in (using util())
     
     # denominator 
-    denom = None # Fill in
+    denom = np.exp(v).sum(axis=1, keepdims=True) # Fill in
     assert denom.ndim == 2 # denom must be (N,1) so we can divide an (N,J) matrix with it without broadcasting errors
     
     # Conditional choice probabilites
-    ccp = None # Fill in 
+    ccp = np.exp(v) / denom # Fill in 
     
     return ccp
 
