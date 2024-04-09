@@ -11,7 +11,8 @@ def q(theta, y, x):
     Returns
         (N,) vector. 
     '''
-    return None # Fill in 
+    ll = loglikelihood(theta, y, x)
+    return -ll
 
 def starting_values(y, x): 
     '''starting_values(): returns a "reasonable" vector of parameters from which to start estimation
@@ -59,17 +60,17 @@ def loglikelihood(theta, y, x):
     N,J,K = x.shape 
 
     # deterministic utility 
-    v = None # Fill in (use util function)
+    v = util(theta, x, MAXRESCALE=False) # Fill in (use util function)
 
     # denominator 
-    denom = None # Fill in
+    denom = np.exp(v).sum(axis=1, keepdims=False) # Fill in
     assert denom.ndim == 1 # make sure denom is 1-dimensional so that we can subtract it later 
 
     # utility at chosen alternative 
-    v_i = None # Fill in evaluate v at cols indicated by y 
+    v_i = v[np.arange(N), y] # Fill in evaluate v at cols indicated by y 
 
     # likelihood 
-    ll_i = None # Fill in 
+    ll_i = v_i - np.log(denom) # Fill in 
     assert ll_i.ndim == 1 # we should return an (N,) vector 
 
     return ll_i 
@@ -88,7 +89,7 @@ def choice_prob(theta, x):
     N, J, K = x.shape
     
     # deterministic utility 
-    v = util(theta, x) # Fill in (using util())
+    v = util(theta, x, MAXRESCALE=False) # Fill in (using util())
     
     # denominator 
     denom = np.exp(v).sum(axis=1, keepdims=True) # Fill in
